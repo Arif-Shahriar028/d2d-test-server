@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/faber/send-files', function (req, res) {
-  sendFiles.selectAndSend('8021', 'b1caa74c-a0a3-44ad-ac4d-e507779f6a33');
+  sendFiles.selectAndSend('8021', 'd9177167-a804-4210-b3c3-d19619e36375');
   res.send('<h2>Select and send!</h2>');
 });
 
