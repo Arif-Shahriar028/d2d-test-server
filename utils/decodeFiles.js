@@ -32,7 +32,7 @@ const fs = require('fs');
 const Bottleneck = require('bottleneck');
 
 // Create a bottleneck with a specified limit
-const limiter = new Bottleneck({ maxConcurrent: 1, minTime: 3000 });
+const limiter = new Bottleneck({ maxConcurrent: 1, minTime: 100 });
 
 async function decodeFile(jsonData) {
     const dataArr = jsonData.content.split('::');

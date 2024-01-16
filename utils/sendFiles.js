@@ -66,7 +66,7 @@ async function selectAndSend(port, connId) {
         let chunkNumber = 0;
 
         // Create a limiter with, for example, 1 request per second
-        const limiter = new Bottleneck({ maxConcurrent: 1, minTime: 3000 });
+        const limiter = new Bottleneck({ maxConcurrent: 1, minTime: 100000 });
 
         const sendChunk = async (chunk) => {
             // Use the throttled function
