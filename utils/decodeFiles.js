@@ -1,21 +1,26 @@
-const fs = require('node:fs');
+const fs = require('fs');
 
-function decodeFile(jsonData) {
-  //====== Splitting data to identify content =========
-  const dataArr = jsonData.content.split('::');
-  const file_name = dataArr[0];
-  const base64 = dataArr[1];
-  // console.log(base64);
+async function decodeFile(jsonData) {
+    const dataArr = jsonData.content.split('::');
+    const file_name = dataArr[0];
+    const base64 = dataArr[1];
 
-  //====== Decode base64 data =========
-  const decodedData = atob(base64);
-  // console.log(decodedData);
-  console.log(typeof decodedData);
+    const chunkSize = 99999; // 1 Megabyte
+    const decodedData = Buffer.from(base64, 'base64');
 
-  //====== Create file and write on it ========
-  var writeStream = fs.createWriteStream(`received-files/${file_name}`);
-  writeStream.write(decodedData);
-  writeStream.end();
+    for (let i = 0; i < decodedData.length; i += chunkSize) {
+        const chunkEnd = i + chunkSize < decodedData.length ? i + chunkSize : decodedData.length;
+        const chunk = Buffer.alloc(chunkEnd - i);
+        decodedData.copy(chunk, 0, i, chunkEnd);
+
+        try {
+            // Use async/await with fs.promises.writeFile for asynchronous file writing
+            await fs.writeFile(`received-files/${file_name}`, chunk, { flag: 'a' });
+            console.log(`Chunk written successfully`);
+        } catch (err) {
+            console.error('Error writing chunk to file:', err);
+        }
+    }
 }
 
 module.exports = { decodeFile };

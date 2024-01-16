@@ -19,12 +19,12 @@ app.get('/', (req, res) => {
 });
 
 app.get('/faber/send-files', function (req, res) {
-  sendFiles.selectAndSend('8021', '5158feb8-4679-4bd5-b8ef-cf4eebd94681');
+  sendFiles.selectAndSend('8021', '45cc36b3-14cc-4a01-821b-be80b01943ea');
   res.send('<h2>Select and send!</h2>');
 });
 
 app.get('/alice/send-files', function (req, res) {
-  sendFiles.selectAndSend('8031', 'd4c21def-8ebc-49c6-be2d-58b49593af7a');
+  sendFiles.selectAndSend('8031', 'ef4c42d7-4118-4fa2-a033-80de7e480547');
   res.send('<h2>Select and send!</h2>');
 });
 

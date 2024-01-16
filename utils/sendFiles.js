@@ -1,47 +1,44 @@
 const dialog = require('node-file-dialog');
-const fs = require('node:fs');
+const fs = require('fs');  // Using promises version of fs
 const axios = require('axios');
+const stream = require('stream');
 
-function selectAndSend(port, connId) {
-  // define dialog open type
-  const config = { type: 'open-file' };
+async function selectAndSend(port, connId) {
+    const config = { type: 'open-file' };
 
-  //===== file opening window =========
-  dialog(config)
-    .then((dir) => {
-      //===== extracting file path ==========
-      file_path = dir[0];
-      console.log(file_path);
-      const file_name = file_path.split('/').pop();
-      //===== File data to binary data =========
-      const fileBuffur = fs.readFileSync(file_path);
-      //===== Base64 conversion of binary data =========
-      const base64string = fileBuffur.toString('base64');
-      // console.log(base64string);
+    try {
+        const dir = await dialog(config);
+        const file_path = dir[0];
+        console.log(file_path);
+        const file_name = file_path.split('/').pop();
 
-      const data = {
-        content: file_name + '::' + base64string,
-      };
+        const chunkSize = 99999; // 1 Megabyte
+        const fileStream = fs.createReadStream(file_path, { highWaterMark: chunkSize });
+        let chunkNumber = 0;
 
-      //========= call Agent's administritive api ==============
-      axios
-        .post(
-          `http://localhost:${port}/connections/${connId}/send-message`,
-          data
-        )
-        .then((resp) => {
-          try {
-            console.log('query successful');
-            // console.log(JSON.stringify(resp.data, null, 2));
-          } catch (error) {
-            console.log(error);
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    })
-    .catch((err) => console.log(err));
+        const sendChunk = async (chunk) => {
+            const base64string = chunk.toString('base64');
+            const data = {
+                content: `${file_name}::chunk${chunkNumber}::${base64string}`,
+            };
+
+            try {
+                await axios.post(`http://localhost:${port}/connections/${connId}/send-message`, data);
+                console.log(`Chunk ${chunkNumber} sent successfully`);
+                chunkNumber++;
+            } catch (err) {
+                console.error(err);
+            }
+        };
+
+        for await (const chunk of fileStream) {
+            await sendChunk(chunk);
+        }
+
+        console.log('File sent successfully');
+    } catch (err) {
+        console.error(err);
+    }
 }
 
 module.exports = { selectAndSend };

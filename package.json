@@ -4,6 +4,7 @@
   "description": "A dummy server for testing wehbook and controller of ACA-Py agent",
   "main": "server.js",
   "scripts": {
+    "start": "nodemon server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
