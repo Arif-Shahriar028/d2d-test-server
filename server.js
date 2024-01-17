@@ -24,7 +24,7 @@ app.get('/faber/send-files', function (req, res) {
 });
 
 app.get('/alice/send-files', function (req, res) {
-  sendFiles.selectAndSend('8031', 'ef4c42d7-4118-4fa2-a033-80de7e480547');
+  sendFiles.selectAndSend('8031', 'eba73157-f006-4e5d-8360-c3796dd594d8');
   res.send('<h2>Select and send!</h2>');
 });
 
