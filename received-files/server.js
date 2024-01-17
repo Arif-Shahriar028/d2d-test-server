@@ -195,7 +195,7 @@ app.get('/send-files', async function (req, res) {
 app.get('/agent/send-files', async function (req, res) {
   const response = await agentService.getConnections();
   sendFiles.selectAndSend('8021', response[0].connection_id);
-  res.send('<h2>Select and send!</h2>');
+  // res.send('<h2>Select and send!</h2>');
 });
 
 app.get('/alice/send-files', async function (req, res) {

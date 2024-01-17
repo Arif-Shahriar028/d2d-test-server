@@ -29,6 +29,7 @@ const fs = require('fs').promises;
 async function decodeFile(jsonData) {
   const dataArr = jsonData.content.split('::');
   const file_name = dataArr[0];
+  const chunkNo = dataArr[1];
   const base64 = dataArr[2];
 
   const chunkSize = 99999; // 1 Megabyte
@@ -43,7 +44,7 @@ async function decodeFile(jsonData) {
     try {
       // Use async/await with fs.promises.writeFile for asynchronous file writing
       await fs.writeFile(`received-files/${file_name}`, chunk, { flag: 'a' });
-      console.log(`Chunk ${j} written successfully`);
+      console.log(`Chunk ${chunkNo} written successfully`);
     } catch (err) {
       console.error('Error writing chunk to file:', err);
     }
