@@ -33,8 +33,8 @@ async function decodeFile(jsonData) {
 
   const chunkSize = 99999; // 1 Megabyte
   const decodedData = Buffer.from(base64, 'base64');
-
-  for (let i = 0; i < decodedData.length; i += chunkSize) {
+  let j = 0;
+  for (let i = 0; i < decodedData.length; i += chunkSize, j += 1) {
     const chunkEnd =
       i + chunkSize < decodedData.length ? i + chunkSize : decodedData.length;
     const chunk = Buffer.alloc(chunkEnd - i);
@@ -43,7 +43,7 @@ async function decodeFile(jsonData) {
     try {
       // Use async/await with fs.promises.writeFile for asynchronous file writing
       await fs.writeFile(`received-files/${file_name}`, chunk, { flag: 'a' });
-      console.log(`Chunk written successfully`);
+      console.log(`Chunk ${j} written successfully`);
     } catch (err) {
       console.error('Error writing chunk to file:', err);
     }
