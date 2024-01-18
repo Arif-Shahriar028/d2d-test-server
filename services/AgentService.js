@@ -127,7 +127,7 @@ class AgentService {
       const response = await httpAsync(
         {
           hostname: hostname,
-          port: 8031,
+          port: port,
           path: '/connections/receive-invitation',
           method: 'POST',
         },
