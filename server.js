@@ -171,8 +171,17 @@ app.get('/receive-invitation', (req, res) => {
 app.get('/activeCon', async (req, res) => {
   console.log('Now at active Connection...');
   const response = await agentService.getConnections();
+
   if (response) {
-    console.log('response: \n' + JSON.stringify(response[0].connection_id));
+    const activeConnections = response.filter(
+      (connection) => connection.state === 'active'
+    );
+    console.log(
+      'response: \n' +
+        JSON.stringify(
+          activeConnections[activeConnections.length - 1].connection_id
+        )
+    );
   }
   res.render('activeCon');
 });
@@ -194,7 +203,13 @@ app.get('/send-files', async function (req, res) {
 
 app.get('/agent/send-files', async function (req, res) {
   const response = await agentService.getConnections();
-  sendFiles.selectAndSend('8021', response[0].connection_id);
+  const activeConnections = response.filter(
+    (connection) => connection.state === 'active'
+  );
+  sendFiles.selectAndSend(
+    '8021',
+    activeConnections[activeConnections.length - 1].connection_id
+  );
   res.send('<h2>Select and send!</h2>');
 });
 
