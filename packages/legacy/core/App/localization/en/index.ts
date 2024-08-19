@@ -390,7 +390,7 @@ const translation = {
   },
   "Contacts": {
     "EmptyList": "Your Contacts is empty!",
-    "TypeHere": "Message this contact...",
+    "TypeHere": "Message or send file...",
     "PeopleAndOrganizations": "People and organizations you've interacted with are listed here.",
     "WhatAreContacts": "What are Contacts?",
     "AddContact": "Add Contact",

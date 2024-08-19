@@ -1,6 +1,11 @@
 import React from 'react'
-import { Composer, InputToolbar, Send } from 'react-native-gifted-chat'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { TouchableOpacity, View } from 'react-native'
+// import { Bubble, Composer, InputToolbar, Send } from 'react-native-gifted-chat'
+// import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import {Bubble, GiftedChat, Send, IMessage, InputToolbar, Composer} from 'react-native-gifted-chat';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { Icon } from 'react-native-elements';
+// import FontAwesome, { SolidIcons, RegularIcons, BrandIcons } from 'react-native-fontawesome';
 
 export const renderInputToolbar = (props: any, theme: any) => (
   <InputToolbar
@@ -32,7 +37,7 @@ export const renderComposer = (props: any, theme: any, placeholder: string) => (
   />
 )
 
-export const renderSend = (props: any, theme: any) => (
+export const renderSend = (props: any, theme: any, _pickDocument: () => void) => (
   <Send
     {...props}
     alwaysShowSend={true}
@@ -41,6 +46,54 @@ export const renderSend = (props: any, theme: any) => (
       ...theme.sendContainer,
     }}
   >
-    <Icon name="send" size={38} color={props.text ? theme.sendEnabled : theme.sendDisabled} />
+  <View style={{flexDirection: 'row'}}>
+    <TouchableOpacity onPress={_pickDocument}>
+      <Icon
+          type="font-awesome"
+          name="paperclip"
+          style={{
+            marginBottom: 10,
+            marginRight: 10,
+            transform: [{rotateY: '180deg'}],
+          }}
+          size={25}
+          color='blue'
+          // tvParallaxProperties={undefined}
+        />
+    </TouchableOpacity>
+      
+      <Icon
+        type="font-awesome"
+        name="send"
+        style={{marginBottom: 10, marginRight: 10}}
+        size={25}
+        color='orange'
+        // tvParallaxProperties={undefined}
+      />
+    </View>
+    {/* <Icon name="send" size={38} color={props.text ? theme.sendEnabled : theme.sendDisabled} /> */}
   </Send>
 )
+
+
+export const renderBubble = (props: any) => {
+  return (
+    <Bubble
+      {...props}
+      wrapperStyle={{
+        right: {
+          backgroundColor: '#2e64e5',
+        },
+      }}
+      textStyle={{
+        right: {
+          color: '#fff',
+        },
+      }}
+    />
+  );
+};
+
+export const scrollToBottomComponent = () => {
+  return <FontAwesome name="angle-double-down" size={22} color="#333" />;
+};
