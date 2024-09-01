@@ -81,6 +81,8 @@ const Chat: React.FC<ChatProps> = ({ route }) => {
 
   const onSend = useCallback(
     async (messages: IMessage[]) => {
+      console.log(messages)
+      console.log(messages[0].text)
       await agent?.basicMessages.sendMessage(connectionId, messages[0].text)
     },
     [agent, connectionId]
